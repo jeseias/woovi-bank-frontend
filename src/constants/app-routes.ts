@@ -4,4 +4,7 @@ export const AppRoutePaths = {
     Login: "/auth/login",
     SignUp: "/auth/sign-up",
   },
+  Dashboard: {
+    Index: "/",
+  },
 } as const;

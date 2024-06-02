@@ -1,12 +1,12 @@
-import { DashboardPage } from "@/pages/dashboard/dashboard-page";
-import { Routes as RouteWrapper, Route } from "react-router-dom";
+import { Routes as RouteWrapper } from "react-router-dom";
 import { authRoutes } from "@/pages/auth/auth.routes";
+import { dashboardRoutes } from "@/pages/dashboard/dashboard.routes";
 
 export const AppRoutes = () => {
   return (
     <RouteWrapper>
       {authRoutes()}
-      <Route path="/" element={<DashboardPage />} />
+      {dashboardRoutes()}
     </RouteWrapper>
   );
 };
