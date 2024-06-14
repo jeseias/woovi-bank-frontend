@@ -1,14 +1,18 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/routes";
 import { AuthProvider } from "./contexts/auth-context";
+import { RelayEnvironmentProvider } from "react-relay";
+import { environment } from "./lib/environment";
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </BrowserRouter>
+    <RelayEnvironmentProvider environment={environment}>
+      <BrowserRouter>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </BrowserRouter>
+    </RelayEnvironmentProvider>
   );
 }
 
