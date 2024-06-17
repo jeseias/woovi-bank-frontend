@@ -12,22 +12,10 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useLocation, useRoutes } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AppRoutePaths } from "@/constants";
-import { gql, useMutation } from "@apollo/client";
-
-const REGISTER_USER_MUTATION = gql`
-  mutation RegisterUser($input: RegisterUserInput!) {
-    registerUser(input: $input) {
-      user {
-        id
-        tax_id
-        name
-      }
-      token
-    }
-  }
-`;
+import { useAuth } from "@/contexts/auth-context";
+import { useApiSignUp } from "./sign-up.helpers";
 
 const formSchema = z.object({
   name: z.string(),
@@ -36,9 +24,8 @@ const formSchema = z.object({
 });
 
 export const SignUpForm = () => {
-  const [signUp, { data, loading, error }] = useMutation(
-    REGISTER_USER_MUTATION
-  );
+  const { authenticateUser } = useAuth();
+  const { signUp, data } = useApiSignUp();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -46,7 +33,9 @@ export const SignUpForm = () => {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     signUp({
       variables: { input: values },
-      onCompleted() {},
+      onCompleted() {
+        authenticateUser(data?.data.user, data?.data.token);
+      },
     });
   };
 
