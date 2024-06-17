@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import InputMask from "react-input-mask";
 import {
   Form,
   FormControl,
@@ -11,8 +12,22 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useRoutes } from "react-router-dom";
 import { AppRoutePaths } from "@/constants";
+import { gql, useMutation } from "@apollo/client";
+
+const REGISTER_USER_MUTATION = gql`
+  mutation RegisterUser($input: RegisterUserInput!) {
+    registerUser(input: $input) {
+      user {
+        id
+        tax_id
+        name
+      }
+      token
+    }
+  }
+`;
 
 const formSchema = z.object({
   name: z.string(),
@@ -21,12 +36,18 @@ const formSchema = z.object({
 });
 
 export const SignUpForm = () => {
+  const [signUp, { data, loading, error }] = useMutation(
+    REGISTER_USER_MUTATION
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    signUp({
+      variables: { input: values },
+      onCompleted() {},
+    });
   };
 
   return (
@@ -55,7 +76,16 @@ export const SignUpForm = () => {
             <FormItem>
               <FormLabel>Tax Id</FormLabel>
               <FormControl>
-                <Input placeholder="cpf or cnpj" {...field} />
+                <InputMask
+                  mask="999.999.999-99"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                >
+                  {(inputProps: any) => (
+                    <Input placeholder="cpf or cnpj" {...inputProps} />
+                  )}
+                </InputMask>
               </FormControl>
               <FormMessage />
             </FormItem>

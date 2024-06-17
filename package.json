@@ -11,17 +11,8 @@
     "relay": "relay-compiler",
     "relay:watch": "relay-compiler --watch"
   },
-  "relay": {
-    "src": "./src",
-    "language": "typescript",
-    "schema": "./data/schema.graphql",
-    "excludes": [
-      "**/node_modules/**",
-      "**/__mocks__/**",
-      "**/__generated__/**"
-    ]
-  },
   "dependencies": {
+    "@apollo/client": "^3.10.5",
     "@hookform/resolvers": "^3.4.2",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
@@ -29,22 +20,18 @@
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "graphql": "^16.8.2",
     "lucide-react": "^0.381.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.5",
     "react-input-mask": "^2.0.4",
-    "react-relay": "^16.2.0",
     "react-router-dom": "^6.23.1",
-    "relay-runtime": "^16.2.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.24.7",
-    "@babel/preset-react": "^7.24.7",
-    "@babel/preset-typescript": "^7.24.7",
     "@types/node": "^20.13.0",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
@@ -54,18 +41,12 @@
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
-    "babel-plugin-macros": "^3.1.0",
-    "babel-plugin-relay": "^16.2.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-    "graphql": "^16.8.2",
     "postcss": "^8.4.38",
-    "relay-compiler": "^16.2.0",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0",
-    "vite-plugin-babel": "^1.2.0"
-  },
-  "packageManager": "pnpm@8.6.7+sha512.bd1216a43fcbe2985ff41936a3f3b64c347c7c5a099e962ba764caa9321917fa99dbfae02f7a8a5f31e87c781b5ec8a7c0ca12122833dbcb2a937a50fb230441"
+    "vite": "^5.2.0"
+  }
 }

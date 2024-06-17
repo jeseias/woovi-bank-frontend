@@ -1,18 +1,22 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/routes";
 import { AuthProvider } from "./contexts/auth-context";
-import { RelayEnvironmentProvider } from "react-relay";
-import { environment } from "./lib/environment";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+
+const apolloClient = new ApolloClient({
+  uri: import.meta.env.VITE_API_URL!,
+  cache: new InMemoryCache(),
+});
 
 function App() {
   return (
-    <RelayEnvironmentProvider environment={environment}>
+    <ApolloProvider client={apolloClient}>
       <BrowserRouter>
         <AuthProvider>
           <AppRoutes />
         </AuthProvider>
       </BrowserRouter>
-    </RelayEnvironmentProvider>
+    </ApolloProvider>
   );
 }
 
