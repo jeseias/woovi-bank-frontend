@@ -2,8 +2,10 @@ import { Outlet } from "react-router-dom";
 import { NAV_ITEMS } from "./dashboard.data";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/auth-context";
 
 export const DashboardLayout = () => {
+  const { signOut } = useAuth();
   return (
     <div className="h-screen w-screen grid grid-cols-[300px_1fr] grid-rows-[60px_1fr] overflow-hidden">
       <aside className="border-r p-5 row-start-1 row-end-3 flex flex-col">
@@ -19,7 +21,10 @@ export const DashboardLayout = () => {
           ))}
         </div>
         <div className="mt-auto">
-          <Button className="flex items-center rounded-md p-3  px-4 w-full">
+          <Button
+            className="flex items-center rounded-md p-3  px-4 w-full"
+            onClick={signOut}
+          >
             <LogOut color="#fff" />
             <p className="ml-2 ">Logout</p>
           </Button>

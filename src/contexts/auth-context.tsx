@@ -3,7 +3,7 @@ import { AppRoutePaths } from "@/constants";
 import { StorageKeys } from "@/constants/app-keys";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { PropsWithChildren, createContext, useContext, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface IAuthContext {
   isLogged: boolean;
@@ -17,13 +17,14 @@ const AuthContext = createContext<IAuthContext>({
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigateTo = useNavigate();
+  const { pathname } = useLocation();
   const [user, setUser] = useLocalStorage<IUser | null>(StorageKeys.User);
   const [token, setToken] = useLocalStorage<string>(StorageKeys.Token);
 
   const signOut = () => {
     setUser(null);
     setToken("");
-    navigateTo("/login");
+    navigateTo(AppRoutePaths.Auth.Login);
   };
 
   const authenticateUser = (user: IUser, token: string) => {
@@ -36,13 +37,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }, [user, token]);
 
   useEffect(() => {
-    if (isLogged) {
+    if (isLogged && pathname.startsWith(AppRoutePaths.Auth.Index)) {
       navigateTo(AppRoutePaths.Dashboard.Index);
-      return;
+    } else if (!isLogged && !pathname.startsWith(AppRoutePaths.Auth.Index)) {
+      navigateTo(AppRoutePaths.Auth.Login);
     }
-
-    navigateTo(AppRoutePaths.Auth.Login);
-  }, [isLogged, navigateTo]);
+  }, [isLogged, navigateTo, pathname]);
 
   return (
     <AuthContext.Provider value={{ isLogged, signOut, authenticateUser }}>
