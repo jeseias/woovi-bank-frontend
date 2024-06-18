@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputMask from "react-input-mask";
-
 import {
   Form,
   FormControl,
@@ -16,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { AppRoutePaths } from "@/constants";
 import { validateCPF } from "@/lib/validate-cpf";
+import { useApiLogin } from "./login.helpers";
 
 const formSchema = z.object({
   tax_id: z.string().refine((value) => validateCPF(value), {
@@ -24,12 +24,19 @@ const formSchema = z.object({
   password: z.string().min(6).max(50),
 });
 
+type FormData = z.infer<typeof formSchema>;
+
 export const LoginForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { login } = useApiLogin();
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {};
+  const onSubmit = async (values: FormData) => {
+    login({
+      variables: { input: values },
+    });
+  };
 
   return (
     <Form {...form}>

@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { AppRoutePaths } from "@/constants";
-import { useAuth } from "@/contexts/auth-context";
 import { useApiSignUp } from "./sign-up.helpers";
 
 const formSchema = z.object({
@@ -23,19 +22,17 @@ const formSchema = z.object({
   password: z.string().min(6).max(50),
 });
 
+type FormData = z.infer<typeof formSchema>;
+
 export const SignUpForm = () => {
-  const { authenticateUser } = useAuth();
-  const { signUp, data } = useApiSignUp();
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { signUp } = useApiSignUp();
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: FormData) => {
     signUp({
       variables: { input: values },
-      onCompleted() {
-        authenticateUser(data?.data.user, data?.data.token);
-      },
     });
   };
 
