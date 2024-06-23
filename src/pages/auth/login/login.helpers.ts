@@ -1,8 +1,6 @@
 import { IUser } from "@/@types/app.types";
-import { AppRoutePaths } from "@/constants";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/contexts/auth-content/use-auth";
 import { gql, useMutation } from "@apollo/client";
-import { useNavigate } from "react-router-dom";
 
 const LOGIN_USER_MUTATION = gql`
   mutation LoginUser($input: LoginUserInput!) {
@@ -18,29 +16,21 @@ const LOGIN_USER_MUTATION = gql`
 `;
 
 interface Response {
-  data: {
+  login: {
     user: IUser;
     token: string;
   };
 }
 
 export const useApiLogin = () => {
-  const navigateTo = useNavigate();
   const { authenticateUser } = useAuth();
-  const [login, { data, loading, error }] = useMutation<Response>(
-    LOGIN_USER_MUTATION,
-    {
-      onCompleted() {
-        authenticateUser(data?.data.user, data?.data.token);
-        navigateTo(AppRoutePaths.Dashboard.Index);
-      },
-    }
-  );
+  const [login] = useMutation<Response>(LOGIN_USER_MUTATION, {
+    onCompleted(data) {
+      authenticateUser(data.login.user, data.login.token);
+    },
+  });
 
   return {
     login,
-    data,
-    isLoading: loading,
-    error,
   };
 };

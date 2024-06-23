@@ -2,7 +2,7 @@ import { IUser } from "@/@types/app.types";
 import { AppRoutePaths } from "@/constants";
 import { StorageKeys } from "@/constants/app-keys";
 import { useLocalStorage } from "@/hooks/use-local-storage";
-import { PropsWithChildren, createContext, useContext, useEffect, useMemo } from "react";
+import { PropsWithChildren, createContext, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface IAuthContext {
@@ -11,7 +11,7 @@ interface IAuthContext {
   authenticateUser: (user: IUser, token: string) => void;
 }
 
-const AuthContext = createContext<IAuthContext>({
+export const AuthContext = createContext<IAuthContext>({
   isLogged: false,
 } as IAuthContext);
 
@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const authenticateUser = (user: IUser, token: string) => {
     setUser(user);
     setToken(token);
+     navigateTo(AppRoutePaths.Dashboard.Index);
   };
 
   const isLogged = useMemo(() => {
@@ -50,7 +51,3 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => {
-  return useContext(AuthContext);
-}

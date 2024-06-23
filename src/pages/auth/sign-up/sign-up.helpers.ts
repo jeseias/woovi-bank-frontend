@@ -1,9 +1,9 @@
 import { IUser } from "@/@types/app.types";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/contexts/auth-content/use-auth";
 import { gql, useMutation } from "@apollo/client";
 
 interface Response {
-  data: {
+  registerUser: {
     user: IUser;
     token: string;
   };
@@ -24,19 +24,13 @@ const REGISTER_USER_MUTATION = gql`
 
 export const useApiSignUp = () => {
   const { authenticateUser } = useAuth();
-  const [signUp, { data, loading, error }] = useMutation<Response>(
-    REGISTER_USER_MUTATION,
-    {
-      onCompleted() {
-        authenticateUser(data?.data.user, data?.data.token);
-      },
-    }
-  );
+  const [signUp] = useMutation<Response>(REGISTER_USER_MUTATION, {
+    onCompleted(data) {
+      authenticateUser(data.registerUser.user, data.registerUser.token);
+    },
+  });
 
   return {
     signUp,
-    data,
-    isLoading: loading,
-    error,
   };
 };

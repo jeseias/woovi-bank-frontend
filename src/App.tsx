@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/routes";
-import { AuthProvider } from "./contexts/auth-context";
+import { AuthProvider } from "./contexts/auth-content/auth-context";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 const apolloClient = new ApolloClient({
