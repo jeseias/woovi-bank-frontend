@@ -10,11 +10,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { AppRoutePaths } from "@/constants";
 import { useApiSignUp } from "./sign-up.helpers";
+import { ViButton } from "@/components/vi-button";
 
 const formSchema = z.object({
   name: z.string(),
@@ -25,7 +25,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const SignUpForm = () => {
-  const { signUp } = useApiSignUp();
+  const { signUp, isLoading } = useApiSignUp();
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
@@ -91,7 +91,9 @@ export const SignUpForm = () => {
           )}
         />
         <div className="flex items-end">
-          <Button type="submit">Submit</Button>
+          <ViButton type="submit" isLoading={isLoading}>
+            Submit
+          </ViButton>
           <Link
             to={AppRoutePaths.Auth.Login}
             className="ml-auto hover:underline"

@@ -10,12 +10,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { AppRoutePaths } from "@/constants";
 import { validateCPF } from "@/lib/validate-cpf";
 import { useApiLogin } from "./login.helpers";
+import { ViButton } from "@/components/vi-button";
 
 const formSchema = z.object({
   tax_id: z.string().refine((value) => validateCPF(value), {
@@ -27,7 +27,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const LoginForm = () => {
-  const { login } = useApiLogin();
+  const { login, isLoading } = useApiLogin();
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
@@ -80,7 +80,9 @@ export const LoginForm = () => {
           )}
         />
         <div className="flex items-end">
-          <Button type="submit">Submit</Button>
+          <ViButton type="submit" isLoading={isLoading}>
+            Submit
+          </ViButton>
           <Link
             to={AppRoutePaths.Auth.SignUp}
             className="ml-auto hover:underline"

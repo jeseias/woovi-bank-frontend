@@ -24,7 +24,7 @@ const REGISTER_USER_MUTATION = gql`
 
 export const useApiSignUp = () => {
   const { authenticateUser } = useAuth();
-  const [signUp] = useMutation<Response>(REGISTER_USER_MUTATION, {
+  const [signUp, {loading}] = useMutation<Response>(REGISTER_USER_MUTATION, {
     onCompleted(data) {
       authenticateUser(data.registerUser.user, data.registerUser.token);
     },
@@ -32,5 +32,6 @@ export const useApiSignUp = () => {
 
   return {
     signUp,
+    isLoading: loading,
   };
 };

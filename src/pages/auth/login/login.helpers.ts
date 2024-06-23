@@ -24,7 +24,7 @@ interface Response {
 
 export const useApiLogin = () => {
   const { authenticateUser } = useAuth();
-  const [login] = useMutation<Response>(LOGIN_USER_MUTATION, {
+  const [login, { loading }] = useMutation<Response>(LOGIN_USER_MUTATION, {
     onCompleted(data) {
       authenticateUser(data.login.user, data.login.token);
     },
@@ -32,5 +32,6 @@ export const useApiLogin = () => {
 
   return {
     login,
+    isLoading: loading,
   };
 };
